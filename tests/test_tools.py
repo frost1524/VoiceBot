@@ -148,6 +148,11 @@ def test_dispatch_tool_unknown():
     assert "error" in result
 
 
+def test_dispatch_tool_null_argument_safe():
+    result = dispatch_tool("check_order_status", {"order_id": None})
+    assert "error" in result
+
+
 # ── TOOL_SCHEMAS ──
 
 def test_tool_schemas_count():

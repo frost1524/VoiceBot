@@ -195,13 +195,13 @@ def connect_to_agent(reason: str, order_id: str = None) -> dict:
 
 def dispatch_tool(name: str, arguments: dict) -> dict:
     handlers = {
-        "check_order_status": lambda: check_order_status(arguments.get("order_id", "")),
-        "initiate_return": lambda: initiate_return(arguments.get("order_id", ""), arguments.get("reason", "")),
-        "get_refund_status": lambda: get_refund_status(arguments.get("order_id", "")),
-        "search_products": lambda: search_products(arguments.get("query", "")),
-        "get_account_info": lambda: get_account_info(arguments.get("email", "")),
-        "escalate_complaint": lambda: escalate_complaint(arguments.get("order_id", ""), arguments.get("issue", "")),
-        "connect_to_agent": lambda: connect_to_agent(arguments.get("reason", ""), arguments.get("order_id")),
+        "check_order_status": lambda: check_order_status(arguments.get("order_id") or ""),
+        "initiate_return": lambda: initiate_return(arguments.get("order_id") or "", arguments.get("reason") or ""),
+        "get_refund_status": lambda: get_refund_status(arguments.get("order_id") or ""),
+        "search_products": lambda: search_products(arguments.get("query") or ""),
+        "get_account_info": lambda: get_account_info(arguments.get("email") or ""),
+        "escalate_complaint": lambda: escalate_complaint(arguments.get("order_id") or "", arguments.get("issue") or ""),
+        "connect_to_agent": lambda: connect_to_agent(arguments.get("reason") or "", arguments.get("order_id")),
     }
     handler = handlers.get(name)
     if handler:
