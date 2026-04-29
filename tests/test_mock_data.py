@@ -30,7 +30,7 @@ def test_one_order_per_status():
 
 
 def test_products_count():
-    assert len(PRODUCTS) == 15
+    assert len(PRODUCTS) == 16
 
 
 def test_products_have_required_fields():

@@ -48,7 +48,7 @@ ORDERS = {
     },
     "ORD005": {
         "id": "ORD005",
-        "product": "Libas Women's Kurta Set (Size M)",
+        "product": "Libas Women's Kurta Set",
         "status": "return_initiated",
         "amount": 899,
         "order_date": "2026-04-15",
@@ -86,6 +86,7 @@ PRODUCTS = [
     {"id": "P013", "name": "Prestige Hard Anodised Kadai 3L", "price": 1299, "category": "Home & Kitchen", "in_stock": True, "rating": 4.3, "seller": "KitchenStore"},
     {"id": "P014", "name": "Cello Opalware Dinner Set (18 pcs)", "price": 1899, "category": "Home & Kitchen", "in_stock": False, "rating": 4.1, "seller": "HomeDecor"},
     {"id": "P015", "name": "Pigeon Aluminium Pressure Cooker 5L", "price": 1349, "category": "Home & Kitchen", "in_stock": True, "rating": 4.0, "seller": "HomeAppliances"},
+    {"id": "P016", "name": "iPhone 15 Silicone Case - Blue", "price": 1299, "category": "Electronics", "in_stock": True, "rating": 4.2, "seller": "CaseStore"},
 ]
 
 ACCOUNTS = {
