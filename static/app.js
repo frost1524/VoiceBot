@@ -16,8 +16,9 @@ let micStream    = null;
 let processor    = null;
 let sourceNode   = null;
 let isRecording  = false;
-let nextPlayTime = 0;
-let currentBotEl = null;
+let nextPlayTime  = 0;
+let currentBotEl  = null;
+let currentUserEl = null;
 
 // ── Status helpers ──
 function setStatus(state, text) {
@@ -121,7 +122,12 @@ function handleEvent(event) {
             break;
 
         case 'conversation.item.input_audio_transcription.completed':
-            appendMessage('user', event.transcript.trim());
+            if (currentUserEl) {
+                currentUserEl.querySelector('.transcript-msg-bubble').textContent = event.transcript.trim();
+                currentUserEl = null;
+            } else {
+                appendMessage('user', event.transcript.trim());
+            }
             break;
 
         case 'agent_connect':
@@ -180,6 +186,7 @@ function stopRecording() {
     if (micStream)  { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
 
     if (ws && ws.readyState === WebSocket.OPEN) {
+        currentUserEl = appendMessage('user', '…');
         ws.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
         ws.send(JSON.stringify({ type: 'response.create' }));
         setStatus('connected', 'Processing…');
