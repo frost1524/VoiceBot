@@ -5,7 +5,7 @@ import os
 import websockets
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from system_prompt import SYSTEM_PROMPT
@@ -14,6 +14,8 @@ from tools import TOOL_SCHEMAS, dispatch_tool
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+if not OPENAI_API_KEY:
+    raise RuntimeError("OPENAI_API_KEY environment variable is not set. Add it to .env file.")
 REALTIME_URL = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview"
 
 app = FastAPI(title="Snapdeal Voice Bot")
@@ -40,7 +42,7 @@ async def websocket_proxy(client_ws: WebSocket):
     }
 
     try:
-        async with websockets.connect(REALTIME_URL, additional_headers=headers) as openai_ws:
+        async with websockets.connect(REALTIME_URL, extra_headers=headers) as openai_ws:
             await openai_ws.send(json.dumps({
                 "type": "session.update",
                 "session": {
@@ -67,7 +69,10 @@ async def websocket_proxy(client_ws: WebSocket):
             async def openai_to_client():
                 try:
                     async for raw in openai_ws:
-                        event = json.loads(raw)
+                        try:
+                            event = json.loads(raw)
+                        except json.JSONDecodeError:
+                            continue
                         event_type = event.get("type", "")
 
                         if event_type == "response.function_call_arguments.done":
@@ -85,17 +90,25 @@ async def websocket_proxy(client_ws: WebSocket):
                                 "type": "conversation.item.create",
                                 "item": {
                                     "type": "function_call_output",
-                                    "call_id": event["call_id"],
+                                    "call_id": event.get("call_id", ""),
                                     "output": json.dumps(result),
                                 },
                             }))
                             await openai_ws.send(json.dumps({"type": "response.create"}))
-                        else:
+                        elif event_type != "response.function_call_arguments.delta":
                             await client_ws.send_text(json.dumps(event))
                 except Exception:
                     pass
 
-            await asyncio.gather(client_to_openai(), openai_to_client())
+            t1 = asyncio.create_task(client_to_openai())
+            t2 = asyncio.create_task(openai_to_client())
+            done, pending = await asyncio.wait([t1, t2], return_when=asyncio.FIRST_COMPLETED)
+            for task in pending:
+                task.cancel()
+                try:
+                    await task
+                except (asyncio.CancelledError, Exception):
+                    pass
 
     except Exception as e:
         try:
