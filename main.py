@@ -15,8 +15,6 @@ from tools import TOOL_SCHEMAS, dispatch_tool
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-if not OPENAI_API_KEY:
-    raise RuntimeError("OPENAI_API_KEY environment variable is not set. Add it to .env file.")
 REALTIME_URL = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview"
 
 app = FastAPI(title="Snapdeal Voice Bot")
@@ -42,8 +40,14 @@ async def mock_data_endpoint():
 async def websocket_proxy(client_ws: WebSocket):
     await client_ws.accept()
 
+    api_key = os.getenv("OPENAI_API_KEY", OPENAI_API_KEY)
+    if not api_key:
+        await client_ws.send_text(json.dumps({"type": "error", "message": "OPENAI_API_KEY is not configured on the server."}))
+        await client_ws.close()
+        return
+
     headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}",
+        "Authorization": f"Bearer {api_key}",
         "OpenAI-Beta": "realtime=v1",
     }
 
