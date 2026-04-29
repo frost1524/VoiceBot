@@ -199,7 +199,8 @@ function startSession() {
     nextPlayTime = 0;
     currentBotEl = null;
 
-    ws = new WebSocket(`ws://${location.host}/ws`);
+    const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    ws = new WebSocket(`${wsProtocol}//${location.host}/ws`);
 
     ws.onopen  = () => setStatus('connected', 'Connecting to Priya…');
     ws.onclose = () => {
