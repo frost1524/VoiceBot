@@ -1,0 +1,217 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --red: #E40046;
+    --red-dark: #b8003a;
+    --white: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --green: #10b981;
+    --yellow: #f59e0b;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* ── Header ── */
+.header {
+    background: var(--red);
+    color: var(--white);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+.logo-snap { color: var(--white); }
+.logo-deal { color: #FFD700; }
+.header-title { font-size: 14px; opacity: 0.9; }
+
+/* ── Main ── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+}
+
+/* ── Transcript ── */
+.transcript-panel {
+    flex: 1;
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+}
+.transcript-placeholder {
+    color: var(--gray-500);
+    font-size: 14px;
+    text-align: center;
+    margin: auto;
+    line-height: 1.6;
+}
+.transcript-msg {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 85%;
+}
+.transcript-msg.bot { align-self: flex-start; }
+.transcript-msg.user { align-self: flex-end; }
+.transcript-msg-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.transcript-msg.user .transcript-msg-label { text-align: right; }
+.transcript-msg-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.55;
+}
+.transcript-msg.bot .transcript-msg-bubble {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-bottom-left-radius: 4px;
+}
+.transcript-msg.user .transcript-msg-bubble {
+    background: var(--red);
+    color: var(--white);
+    border-bottom-right-radius: 4px;
+}
+
+/* ── Status bar ── */
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--gray-500);
+}
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    flex-shrink: 0;
+    transition: background 0.3s;
+}
+.status-dot.connected  { background: var(--green); }
+.status-dot.listening  { background: var(--red);    animation: pulse 1.2s infinite; }
+.status-dot.speaking   { background: var(--yellow); animation: pulse 0.8s infinite; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1;   transform: scale(1);   }
+    50%       { opacity: 0.6; transform: scale(1.35); }
+}
+
+/* ── Mic button ── */
+.mic-container { display: flex; justify-content: center; }
+
+.mic-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    border: none;
+    background: var(--red);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 16px rgba(228, 0, 70, 0.30);
+    user-select: none;
+    -webkit-user-select: none;
+}
+.mic-btn svg { width: 32px; height: 32px; pointer-events: none; }
+.mic-label { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; pointer-events: none; }
+
+.mic-btn:disabled {
+    background: var(--gray-200);
+    color: var(--gray-500);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+.mic-btn:not(:disabled):hover { background: var(--red-dark); }
+.mic-btn:not(:disabled):active { transform: scale(0.95); }
+
+.mic-btn.recording {
+    background: var(--red-dark);
+    animation: mic-ring 1s infinite;
+}
+@keyframes mic-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(228,0,70,0.4), 0 0 0 0 rgba(228,0,70,0.2); }
+    50%       { box-shadow: 0 0 0 10px rgba(228,0,70,0.2), 0 0 0 20px rgba(228,0,70,0.05); }
+}
+
+/* ── Session controls ── */
+.session-controls { display: flex; gap: 12px; }
+.btn {
+    flex: 1;
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.btn-start { background: var(--red); color: var(--white); }
+.btn-start:hover:not(:disabled) { background: var(--red-dark); }
+.btn-end   { background: var(--white); color: var(--gray-700); border: 1px solid var(--gray-200); }
+.btn-end:hover:not(:disabled)   { background: var(--gray-100); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Agent Connect Card ── */
+.agent-connect-card {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 16px;
+}
+.agent-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 12px;
+}
+.agent-card-title::before { content: "👤  "; }
+.agent-card-body  { display: flex; flex-direction: column; gap: 8px; }
+.agent-info-row   { display: flex; justify-content: space-between; align-items: center; }
+.agent-info-label { font-size: 13px; color: #78350f; }
+.agent-info-value { font-size: 13px; font-weight: 700; color: #92400e; }
