@@ -8,6 +8,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from mock_data import ACCOUNTS, ORDERS
 from system_prompt import SYSTEM_PROMPT
 from tools import TOOL_SCHEMAS, dispatch_tool
 
@@ -30,6 +31,11 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/api/mock-data")
+async def mock_data_endpoint():
+    return {"orders": ORDERS, "accounts": ACCOUNTS}
 
 
 @app.websocket("/ws")

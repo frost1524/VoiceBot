@@ -20,18 +20,123 @@ body {
     color: var(--gray-900);
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
 }
 
-.app {
+/* ── Two-column layout ── */
+.layout {
+    display: flex;
+    align-items: flex-start;
     width: 100%;
-    max-width: 600px;
+    max-width: 1020px;
+    min-height: 100vh;
+}
+
+.app {
+    width: 600px;
+    min-width: 0;
+    flex-shrink: 0;
     min-height: 100vh;
     background: var(--white);
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* ── Data panel ── */
+.data-panel {
+    flex: 1;
+    min-height: 100vh;
+    background: var(--white);
+    border-left: 1px solid var(--gray-200);
+    padding: 20px 16px;
+    overflow-y: auto;
+}
+
+.dp-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--red);
+}
+
+.dp-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+}
+
+.dp-loading { font-size: 13px; color: var(--gray-500); }
+
+/* Order cards */
+.dp-order-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.dp-order-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.dp-order-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    font-family: 'Courier New', monospace;
+}
+.dp-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 99px;
+    border: 1px solid;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+.dp-order-product {
+    font-size: 12px;
+    color: var(--gray-700);
+    margin-bottom: 2px;
+    line-height: 1.4;
+}
+.dp-order-amount {
+    font-size: 11px;
+    color: var(--gray-500);
+    font-weight: 600;
+}
+
+/* Account cards */
+.dp-account-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.dp-account-email {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 2px;
+}
+.dp-account-name {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+}
+.dp-account-meta {
+    font-size: 11px;
+    color: var(--gray-700);
+    line-height: 1.5;
 }
 
 /* ── Header ── */
