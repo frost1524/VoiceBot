@@ -31,6 +31,11 @@ async def root():
     return FileResponse("static/index.html", headers=NO_CACHE)
 
 
+@app.get("/app")
+async def app_fresh():
+    return FileResponse("static/index.html", headers=NO_CACHE)
+
+
 @app.get("/static/app.js")
 async def serve_app_js():
     return FileResponse("static/app.js", media_type="application/javascript", headers=NO_CACHE)
