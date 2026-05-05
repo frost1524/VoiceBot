@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snapdeal Customer Support</title>
-    <link rel="stylesheet" href="/static/style.css?v=2">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => {
+                regs.forEach(r => r.unregister());
+            });
+        }
+    </script>
+    <link rel="stylesheet" href="/static/style.css?v=3">
 </head>
 <body>
     <div class="layout">
@@ -78,7 +88,7 @@
 
     </div>
 
-    <script src="/static/app.js?v=2"></script>
+    <script src="/static/app.js?v=3"></script>
     <script>
         // Fetch and render mock data panel
         fetch('/api/mock-data')
