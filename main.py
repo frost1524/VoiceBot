@@ -5,8 +5,8 @@ import os
 import websockets
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse, Response
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from starlette.requests import Request
 
 from mock_data import ACCOUNTS, ORDERS
 from system_prompt import SYSTEM_PROMPT
@@ -17,17 +17,28 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 REALTIME_URL = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview"
 
+NO_CACHE = {
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
+
 app = FastAPI(title="Snapdeal Voice Bot")
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/")
 async def root():
-    return FileResponse("static/index.html", headers={
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache",
-        "Expires": "0",
-    })
+    return FileResponse("static/index.html", headers=NO_CACHE)
+
+
+@app.get("/static/app.js")
+async def serve_app_js():
+    return FileResponse("static/app.js", media_type="application/javascript", headers=NO_CACHE)
+
+
+@app.get("/static/style.css")
+async def serve_style_css():
+    return FileResponse("static/style.css", media_type="text/css", headers=NO_CACHE)
 
 
 @app.get("/health")
