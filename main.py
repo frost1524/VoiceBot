@@ -5,7 +5,7 @@ import os
 import websockets
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from mock_data import ACCOUNTS, ORDERS
@@ -23,7 +23,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def root():
-    return FileResponse("static/index.html")
+    return FileResponse("static/index.html", headers={
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    })
 
 
 @app.get("/health")
