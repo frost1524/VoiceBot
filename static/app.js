@@ -171,7 +171,6 @@ async function startRecording() {
         processor.connect(audioCtx.destination);
         isRecording = true;
         micBtn.classList.add('recording');
-        micLabel.textContent = 'Click to Stop';
         setStatus('listening', 'Listening… click the button when done');
     } catch (err) {
         alert('Microphone access denied. Please allow mic access and try again.');
@@ -182,7 +181,6 @@ function stopRecording() {
     if (!isRecording) return;
     isRecording = false;
     micBtn.classList.remove('recording');
-    micLabel.textContent = 'Click to Speak';
 
     if (processor)  { processor.disconnect();  processor  = null; }
     if (sourceNode) { sourceNode.disconnect();  sourceNode = null; }

@@ -264,7 +264,9 @@ body {
     -webkit-user-select: none;
 }
 .mic-btn svg { width: 32px; height: 32px; pointer-events: none; }
-.mic-label { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; pointer-events: none; }
+.mic-label { font-size: 0; pointer-events: none; }
+.mic-label::after { content: "Click to Speak"; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
+.mic-btn.recording .mic-label::after { content: "Click to Stop"; }
 
 .mic-btn:disabled {
     background: var(--gray-200);
