@@ -5,6 +5,7 @@ const transcriptEl = document.getElementById('transcript');
 const statusDot    = document.getElementById('statusDot');
 const statusText   = document.getElementById('statusText');
 const micBtn       = document.getElementById('micBtn');
+const micLabel     = document.getElementById('micLabel');
 const startBtn     = document.getElementById('startBtn');
 const endBtn       = document.getElementById('endBtn');
 const agentCard    = document.getElementById('agentCard');
@@ -97,7 +98,7 @@ function handleEvent(event) {
     switch (event.type) {
 
         case 'session.updated':
-            setStatus('connected', 'Connected — hold the button to speak');
+            setStatus('connected', 'Connected — click the button to speak');
             micBtn.disabled = false;
             break;
 
@@ -108,7 +109,7 @@ function handleEvent(event) {
 
         case 'response.audio.done':
             nextPlayTime = 0;
-            setStatus('connected', 'Connected — hold the button to speak');
+            setStatus('connected', 'Connected — click the button to speak');
             currentBotEl = null;
             break;
 
@@ -170,7 +171,8 @@ async function startRecording() {
         processor.connect(audioCtx.destination);
         isRecording = true;
         micBtn.classList.add('recording');
-        setStatus('listening', 'Listening…');
+        micLabel.textContent = 'Click to Stop';
+        setStatus('listening', 'Listening… click the button when done');
     } catch (err) {
         alert('Microphone access denied. Please allow mic access and try again.');
     }
@@ -180,6 +182,7 @@ function stopRecording() {
     if (!isRecording) return;
     isRecording = false;
     micBtn.classList.remove('recording');
+    micLabel.textContent = 'Click to Speak';
 
     if (processor)  { processor.disconnect();  processor  = null; }
     if (sourceNode) { sourceNode.disconnect();  sourceNode = null; }
@@ -190,6 +193,14 @@ function stopRecording() {
         ws.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
         ws.send(JSON.stringify({ type: 'response.create' }));
         setStatus('connected', 'Processing…');
+    }
+}
+
+function toggleRecording() {
+    if (isRecording) {
+        stopRecording();
+    } else {
+        startRecording();
     }
 }
 
@@ -225,11 +236,7 @@ function endSession() {
 }
 
 // ── Button bindings ──
-micBtn.addEventListener('mousedown',  startRecording);
-micBtn.addEventListener('mouseup',    stopRecording);
-micBtn.addEventListener('mouseleave', stopRecording);
-micBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startRecording(); }, { passive: false });
-micBtn.addEventListener('touchend',   (e) => { e.preventDefault(); stopRecording();  }, { passive: false });
+micBtn.addEventListener('click', toggleRecording);
 
 startBtn.addEventListener('click', startSession);
 endBtn.addEventListener('click',   endSession);
