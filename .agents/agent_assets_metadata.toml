@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "PBlH7N-nf5yCZimHasD2v"
+uri = "file://README.md"
+type = "text"
+title = "README.md — Snapdeal Voice Bot"
