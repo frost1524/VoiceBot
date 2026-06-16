@@ -102,23 +102,23 @@ function handleEvent(event) {
             micBtn.disabled = false;
             break;
 
-        case 'response.audio.delta':
+        case 'response.output_audio.delta':
             setStatus('speaking', 'Priya is speaking…');
             playChunk(event.delta);
             break;
 
-        case 'response.audio.done':
+        case 'response.output_audio.done':
             nextPlayTime = 0;
             setStatus('connected', 'Connected — click the button to speak');
             currentBotEl = null;
             break;
 
-        case 'response.audio_transcript.delta':
+        case 'response.output_audio_transcript.delta':
             if (!currentBotEl) currentBotEl = appendMessage('bot', '');
             appendToBubble(currentBotEl, event.delta);
             break;
 
-        case 'response.audio_transcript.done':
+        case 'response.output_audio_transcript.done':
             currentBotEl = null;
             break;
 

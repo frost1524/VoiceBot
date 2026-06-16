@@ -75,15 +75,21 @@ async def websocket_proxy(client_ws: WebSocket):
             await openai_ws.send(json.dumps({
                 "type": "session.update",
                 "session": {
-                    "modalities": ["audio", "text"],
+                    "type": "realtime",
                     "instructions": SYSTEM_PROMPT,
-                    "voice": "alloy",
-                    "input_audio_format": "pcm16",
-                    "output_audio_format": "pcm16",
-                    "input_audio_transcription": {"model": "whisper-1"},
-                    "turn_detection": None,
                     "tools": TOOL_SCHEMAS,
                     "tool_choice": "auto",
+                    "audio": {
+                        "input": {
+                            "format": {"type": "audio/pcm", "rate": 24000},
+                            "transcription": {"model": "whisper-1"},
+                            "turn_detection": None,
+                        },
+                        "output": {
+                            "format": {"type": "audio/pcm", "rate": 24000},
+                            "voice": "marin",
+                        },
+                    },
                 },
             }))
 
