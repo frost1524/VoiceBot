@@ -15,7 +15,7 @@ from tools import TOOL_SCHEMAS, dispatch_tool
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-REALTIME_URL = "wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview"
+REALTIME_URL = "wss://api.openai.com/v1/realtime?model=gpt-realtime-2"
 
 NO_CACHE = {
     "Cache-Control": "no-cache, no-store, must-revalidate",
