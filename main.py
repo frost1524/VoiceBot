@@ -68,7 +68,6 @@ async def websocket_proxy(client_ws: WebSocket):
 
     headers = {
         "Authorization": f"Bearer {api_key}",
-        "OpenAI-Beta": "realtime=v1",
     }
 
     try:
